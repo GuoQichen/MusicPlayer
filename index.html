@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+
+</head>
+<body>
+    <audio src="http://yinyueshiting.baidu.com/data2/music/134367234/7142430108000128.mp3?xcode=d237f563093991bbb59adc403ebeee44" controls></audio>
+    <script>
+        var $audio = $('audio')
+        $.ajax({
+            method: 'get',
+            url: 'http://api.jirengu.com/fm/getSong.php?channel=4',
+            dataType: 'jsonp',
+        }).done(function(response){
+            var url = response.song[0].url
+            console.log(url)
+            $audio.attr('src', url)
+        })
+    </script>
+</body>
+</html>
