@@ -94,7 +94,7 @@
         .fm-control>span {
             display: block;
             float: left;
-            padding: 0 20px;
+            padding: 0 18.9px;
             font-size: 1.6em;
         }
 
@@ -102,7 +102,15 @@
             padding-left: 0;
         }
 
+        .fm-control>.control-list {
+            padding-right: 0;
+        }
+
         .fm-control>.control-favor:hover {
+            color: rgb(255,0,0);
+        }
+
+        .fm-control>.control-favor.ilike {
             color: rgba(255,0,0,0.6);
         }
 
@@ -161,8 +169,9 @@
 
         /*下载|分享*/
         .fm-operation {
-            display: inline-block;
+            float: right;
             margin-left: 20px;
+            margin-top: 16px;
         }
 
         .fm-operation>.operation-download {
@@ -282,10 +291,6 @@
             display: list-item;
         }
 
-        .channel-gif {
-            background: url(image/channel.gif) no-repeat 0 0;
-        }
-
         .icon-right {
             float: right;
             margin-top: 9px;
@@ -294,17 +299,106 @@
 
         /*like*/
         .fm-like {
+            display: none;
             position: absolute;
-            top: 30%;
-            left: 115%;
-            width: 150px;
-            height: 200px;
-            border: 1px solid;
+            top: 0%;
+            left: 105%;
+            width: 250px;
+            padding: 10px;
             text-align: center;
-            background-color: #eee;
+            background-color: rgba(0,0,0,0.2);
+            height: 480px;
+            border-radius: 10px;
+        }
+
+        /*隐藏滚动条*/
+        .like-list,.outer-container  {
+            width: 230px;
+            height: 357px;
+        }
+
+        .outer-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .inner-container {
+            height: 357px;
+            position: absolute;
+            left: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /*for chrome*/
+        .like-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .like-item {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+            background-color: rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .like-item:hover {
+            cursor: pointer;
+            background-color: rgba(255,255,255,0.8);
+        }
+
+
+        .like-item::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .like-img {
+            float: left;
+            width: 50px;
+            height: 50px;
+        }
+
+        .like-img>img {
+            width: 100%;
+            border-radius: 2px;
+        }
+
+        .like-title, .like-artist {
+            display: inline-block;
+            line-height: 50px;
+            animation: marquee 5s linear infinite alternate;
+        }
+
+        .title-contain {
+            float: left;
+            width: 60px;
+            height: 50px;
+            margin: 0 25px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .artist-contain {
+            float: left;
+            overflow: hidden;
+            width: 50px;
+            height: 50px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        @keyframes marquee {
+            0% {transform: translateX(0);}
+            100% {transform: translateX(-100%);}
+        }
+
+        .like-holder.hide {
+            display: none;
         }
     </style>
-    <link rel="stylesheet" href="http://at.alicdn.com/t/font_1476018573_5429673.css">
+    <link rel="stylesheet" href="http://at.alicdn.com/t/font_1476091160_1681967.css">
 </head>
 <body>
     <div class="myinfo">
@@ -327,9 +421,10 @@
             </div>
             <div class="fm-control clearfix">
                 <span class="control-play iconfont icon-play"></span>
-                <span class="control-next iconfont icon-next"></span>
-                <span class="control-circle iconfont icon-circle"></span>
-                <span class="control-favor iconfont icon-favor"></span>
+                <span class="control-next iconfont icon-next" title="下一首"></span>
+                <span class="control-circle iconfont icon-circle" title="循环播放"></span>
+                <span class="control-favor iconfont icon-favor" title="喜欢"></span>
+                <span class="control-list iconfont icon-list" title="喜欢的歌曲"></span>
             </div>
             <div class="fm-progress">
                 <div class="progress-status"></div>
@@ -340,25 +435,45 @@
                 <span class="total-time">0:00</span>
             </div>
             <div class="fm-sound">
-                <span class="sound-icon iconfont icon-sound"></span>
+                <span class="sound-icon iconfont icon-sound" title="静音"></span>
                 <div class="sound-control">
                     <div class="sound-status"></div>
                 </div>
             </div>
             <div class="fm-operation">
-                <a class="operation-download iconfont icon-download" href="#!" target="_blank"></a>
-                <a class="operation-share iconfont icon-share" href="http://v.t.sina.com.cn/share/share.php" target="_blank"></a>
+                <a class="operation-download iconfont icon-download" href="#!" target="_blank" title="下载"></a>
+                <a class="operation-share iconfont icon-share" href="http://v.t.sina.com.cn/share/share.php" target="_blank" title="分享到微博"></a>
             </div>
 
 
             <div class="fm-lrc"></div>
-<!--
+
             <div class="fm-like">
-                <h3>我的喜欢</h3>
-                <ul class="like-list">
-                    <li class="like-item">adfadfasdf</li>
-                </ul>
-            </div> -->
+                <h3>Like</h3>
+                <div class="outer-container">
+                    <div class="inner-container">
+                        <ul class="like-list">
+                            <li class="like-holder">目前没有喜欢的歌曲</li>
+                        <!-- template -->
+<!--                             <li class="like-item">
+                                <div class="like-img">
+                                    <img src="http://musicdata.baidu.com/data2/pic/474b28e5291aa2a9a0856c600554ff5a/124400816/124400816.jpg" alt="">
+                                </div>
+                                <div class="title-contain">
+                                    <div class="like-title">
+                                        asdasdfasdf
+                                    </div>
+                                </div>
+                                <div class="artist-contain">
+                                    <div class="like-artist">
+                                        adsfasdf
+                                    </div>
+                                </div>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <audio src="" class="player"></audio>
@@ -431,27 +546,47 @@
             this.$node = $node
             this.$audio = $node.find('.player')
             this.audio = this.$audio.get(0)
+
+            // 歌曲信息
             this.$pic = $node.find('.fm-pic')
             this.$title = $node.find('.info-title')
             this.$artist = $node.find('.info-artist')
+
+            // control panel
             this.$play = $node.find('.control-play')
             this.$next = $node.find('.control-next')
             this.$circle = $node.find('.control-circle')
+            this.$favor = $node.find('.control-favor')
+            this.$list = $node.find('.control-list')
+
+            // 歌曲进度条
             this.$progress = $node.find('.fm-progress')
             this.$progressStatus = $node.find('.progress-status')
             this.$curTime = $node.find('.current-time')
             this.clock = 0
             this.$totalTime = $node.find('.total-time')
             this.totalTime = 0
+
+            // 音量控制
             this.$sound = $node.find('.sound-icon')
             this.$soundControl = $node.find('.sound-control')
             this.$soundStatus = $node.find('.sound-status')
+
+            //下载
             this.$download = $node.find('.operation-download')
-            this.isGetsong = false
+
+            //上一曲
             this.$prev = $node.find('.fm-prev')
             this.prevSong = null
             this.curSong = null
+
+            //下一曲lock
+            this.isGetsong = false
+
+
+            //频道
             this.$channel = $('.channel-list')
+            this.currentChannel = ''
             this.channel = {
                 tuijian: this.$channel.find('.channel-tuijian'),
                 shiguang: this.$channel.find('.channel-shiguang'),
@@ -459,7 +594,12 @@
                 xinqing: this.$channel.find('.channel-xinqing'),
                 yuzhong: this.$channel.find('.channel-yuzhong')
             }
-            this.currentChannel = ''
+
+            // like
+            this.$like = $node.find('.fm-like')
+            this.$likeHolder = $node.find('.like-holder')
+            this.likeSong = []
+
             this.bindEvent()
             this.getSong()
             this.setVolume(30)
@@ -471,7 +611,6 @@
             var $audio = this.$audio
             var audio = this.audio
 
-            //readystate = 1
             this.$audio
                 .on('durationchange', function(){
                     _this.setDuration()
@@ -484,6 +623,7 @@
                     _this.$audio.data('play', true)
                     _this.setCurTime()
                     _this.$play.removeClass('icon-play').addClass('icon-stop')
+                    _this.isLike()
                 })
                 .on('pause',function(){
                     _this.$audio.data('play', false)
@@ -501,12 +641,13 @@
                     _this.getSong()
                 })
 
-            //仅调用DOM-API
             this.$play.on('click', function(){
                 if (!$audio.data('play')) {
                     audio.play()
+                    _this.$play.attr('title', '暂停')
                 } else {
                     audio.pause()
+                    _this.$play.attr('title', '播放')
                 }
             })
 
@@ -551,6 +692,31 @@
                     _this.currentChannel = $(event.target).data('channelid')
                     _this.getSong(_this.currentChannel)
                 }
+            })
+
+            this.$list.on('click', function(){
+                _this.$like.slideToggle()
+
+            })
+
+            this.$favor.on('click', function(){
+                var $this = $(this)
+                _this.$likeHolder.addClass('hide')
+                _this.like()
+                if ($this.hasClass('ilike')) {
+                    $this.removeClass('ilike')
+                    _this.removeLike()
+                } else {
+                    $this.addClass('ilike')
+                }
+            })
+
+            this.$like.on('click','.like-item', function(){
+                var $this = $(this)
+                var song = _this.likeSong[$this.index()-1]
+                _this.songInit(song)
+                _this.renderLrc(song.lrc)
+                _this.curSong = song
             })
         }
 
@@ -618,10 +784,16 @@
             var $circle = this.$circle
             if (!$audio.attr('loop')) {
                 $audio.attr('loop', true)
-                $circle.removeClass('icon-circle').addClass('icon-shuffle')
+                $circle
+                    .removeClass('icon-circle')
+                    .addClass('icon-shuffle')
+                    .attr('title', '随机播放')
             } else {
                 $audio.attr('loop',false)
-                $circle.removeClass('icon-shuffle').addClass('icon-circle')
+                $circle
+                    .removeClass('icon-shuffle')
+                    .addClass('icon-circle')
+                    .attr('title', '循环播放')
             }
         }
 
@@ -774,6 +946,62 @@
             }
         }
 
+        Fm.prototype.like = function() {
+            var song = this.curSong
+            song.isLike = true
+            if(this.likeSong.indexOf(song) === -1) {
+                this.likeSong.push(song)
+                this.renderLikeSong(song)
+            }
+        }
+
+        Fm.prototype.renderLikeSong = function(song) {
+            var $likeList = this.$like.find('.like-list')
+            var template = '<li class="like-item">'
+                         +   '<div class="like-img">'
+                         +     '<img src="{{picture}}" alt="image">'
+                         +   '</div>'
+                         +   '<div class="title-contain">'
+                         +     '<div class="like-title" title="{{title}}">'
+                         +       '{{title}}'
+                         +     '</div>'
+                         +   '</div>'
+                         +   '<div class="artist-contain">'
+                         +     '<div class="like-artist" title="{{artist}}">'
+                         +       '{{artist}}'
+                         +     '</div>'
+                         +   '</div>'
+                         + '</li>'
+            var result = template.replace(/\{\{([^\}]+)\}\}/g, function(match, p1){
+                return song[p1]
+            })
+            $(result).appendTo($likeList)
+        }
+
+        Fm.prototype.renderLikeStatus = function() {
+            this.$favor.css('background-color', 'rgba(255,0,0,0.6)')
+        }
+
+        Fm.prototype.removeLike = function() {
+            var $like = this.$like
+            var $likeItem = this.$like.find('.like-item')
+            var likeSong = this.likeSong
+            var index = likeSong.indexOf(this.curSong)
+            likeSong.splice(index, 1)
+            $likeItem[index].remove()
+            if (!likeSong.length) {
+                $like.find('.like-holder').removeClass('hide')
+            }
+        }
+
+        Fm.prototype.isLike = function() {
+          var $favor = this.$favor
+          if(this.curSong.isLike) {
+            $favor.addClass('ilike')
+          } else {
+            $favor.removeClass('ilike')
+          }
+        }
 
         var fm = new Fm($('.fm'))
 
