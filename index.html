@@ -88,29 +88,21 @@
         /*播放, 停止, 收藏*/
         .fm-control {
             position: relative;
+            margin-left: -37.5px;
             height: 27px;
         }
 
-        .fm-control>span {
-            display: block;
+        .fm-control span {
             float: left;
-            padding: 0 18.9px;
-            font-size: 1.6em;
+            margin-left: 37.5px;
+            font-size: 26px;
         }
 
-        .fm-control>.control-play {
-            padding-left: 0;
-        }
-
-        .fm-control>.control-list {
-            padding-right: 0;
-        }
-
-        .fm-control>.control-favor:hover {
+        .fm-control .control-favor:hover {
             color: rgb(255,0,0);
         }
 
-        .fm-control>.control-favor.ilike {
+        .fm-control .control-favor.ilike {
             color: rgba(255,0,0,0.6);
         }
 
@@ -133,7 +125,7 @@
 
         /*播放时间|音乐时长*/
         .fm-time {
-            display: inline-block;
+            float: left;
             color: #999;
             line-height: 2;
         }
@@ -144,9 +136,10 @@
 
         /*音量*/
         .fm-sound {
-            display: inline-block;
+            float: left;
             width: 86px;
-            margin-left: 16px;
+            margin-left: 20px;
+            margin-top: 16px;
         }
 
         .sound-control {
@@ -429,21 +422,23 @@
             <div class="fm-progress">
                 <div class="progress-status"></div>
             </div>
-            <div class="fm-time">
-                <span class="current-time">0:00</span>
-                <span class="time-separtor">/</span>
-                <span class="total-time">0:00</span>
-            </div>
-            <div class="fm-sound">
-                <span class="sound-icon iconfont icon-sound" title="静音"></span>
-                <div class="sound-control">
-                    <div class="sound-status"></div>
-                </div>
-            </div>
-            <div class="fm-operation">
-                <a class="operation-download iconfont icon-download" href="#!" target="_blank" title="下载"></a>
-                <a class="operation-share iconfont icon-share" href="http://v.t.sina.com.cn/share/share.php" target="_blank" title="分享到微博"></a>
-            </div>
+           <div class="fm-footer clearfix">
+                <div class="fm-time">
+                   <span class="current-time">0:00</span>
+                   <span class="time-separtor">/</span>
+                   <span class="total-time">0:00</span>
+               </div>
+               <div class="fm-sound">
+                   <span class="sound-icon iconfont icon-sound" title="静音"></span>
+                   <div class="sound-control">
+                       <div class="sound-status"></div>
+                   </div>
+               </div>
+               <div class="fm-operation">
+                   <a class="operation-download iconfont icon-download" href="#!" target="_blank" title="下载"></a>
+                   <a class="operation-share iconfont icon-share" href="http://v.t.sina.com.cn/share/share.php" target="_blank" title="分享到微博"></a>
+               </div>
+           </div>
 
 
             <div class="fm-lrc"></div>
