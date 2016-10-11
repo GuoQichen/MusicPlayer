@@ -749,6 +749,7 @@
                 var $this = $(this)
                 var song = _this.likeSong[$this.index()-1]
                 _this.songInit(song)
+                _this.play()
                 _this.renderLrc(song.lrc)
                 _this.curSong = song
             })
