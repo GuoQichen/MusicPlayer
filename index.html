@@ -188,6 +188,10 @@
             white-space: nowrap;
         }
 
+        @media (max-width: 400px) {
+            .fm-lrc {display: none;}
+        }
+
         .fm-lrc:hover {
             background-color: rgba(0,0,0,0.3);
         }
@@ -211,6 +215,10 @@
             box-shadow: 0px 0px 20px 1px #000;
             color: #fff;
             text-align: center;
+        }
+
+        @media (max-width: 400px) {
+            .fm-prev {display: none;}
         }
 
         .fm-prev>img {
@@ -239,6 +247,11 @@
             color: #fff;
         }
 
+        @media (max-width: 400px) {
+            .myinfo {display: none;}
+
+        }
+
         /*频道*/
         .channel {
             position: absolute;
@@ -249,6 +262,10 @@
             border-radius: 5px;
             background-color: rgba(238,238,238,0.6);
             line-height: 1.6;
+        }
+
+        @media (max-width: 400px) {
+            .channel {display: none;}
         }
 
         .channel-list:hover>a {
@@ -304,10 +321,24 @@
             border-radius: 10px;
         }
 
+        @media (max-width: 400px) {
+            .fm-like {
+                top: 110%;
+                left: 0%;
+                width: 300px;
+            }
+        }
+
         /*隐藏滚动条*/
         .like-list,.outer-container  {
             width: 230px;
             height: 357px;
+        }
+
+        @media (max-width: 400px) {
+            .like-list,.outer-container {
+                width: 280px;
+            }
         }
 
         .outer-container {
@@ -371,6 +402,10 @@
             margin: 0 25px;
             overflow: hidden;
             white-space: nowrap;
+        }
+
+        @media (max-width: 400px) {
+            .title-contain {width: 100px;}
         }
 
         .artist-contain {
